@@ -30,18 +30,17 @@ function update(a, b, dom) {
 
 function updateProps(a, b, dom) {
   for (var key in a) {
-    // if (!validAttr[key]) continue
     if (key in b) {
-      if (a[key] != b[key]) dom.setAttribute(key, b[key])
+      if (a[key] != b[key]) setAttribute(dom, key, b[key])
+    } else if (key == 'className') {
+      dom.className = '' /*browser bug workaround*/
     } else {
       dom.removeAttribute(key)
     }
   }
 
   for (var key in b) {
-    // if (!validAttr[key]) continue
-    if (key in a) continue
-    dom.setAttribute(key, b[key])
+    key in a || setAttribute(dom, key, b[key])
   }
 }
 
@@ -78,15 +77,32 @@ function createElement(vnode) {
 
   var node = document.createElement(vnode.tagName)
   var props = vnode.properties
-  for (var key in props) {
-    node.setAttribute(key, props[key])
-  }
+  for (var key in props) setAttribute(node, key, props[key])
 
   vnode.children.forEach(function(child){
     node.appendChild(createElement(child))
   })
 
   return node
+}
+
+/**
+ * Set an attribute on `el`. Since HTML doesn't specify an isfocused
+ * attribute we fake it
+ *
+ * @param {Node} el
+ * @param {String} key
+ * @param {Any} value
+ */
+
+function setAttribute(el, key, value) {
+  if (key == 'style') {
+    for (key in value) el.style[key] = value[key]
+  } else if (key == 'isfocused' && value) {
+    setTimeout(function(){ el.focus() })
+  } else {
+    el[key] = value
+  }
 }
 
 function handleThunk(a, b) {
