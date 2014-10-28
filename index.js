@@ -73,7 +73,7 @@ function updateChildren(a, b, dom) {
 function createElement(vnode) {
   if (vnode.type == 'VirtualText') return document.createTextNode(vnode.text)
   if (vnode.type == 'Widget') return vnode.init()
-  if (vnode.type == 'Thunk') return createElement(unboxThunk(vnode))
+  if (vnode.type == 'Thunk') return createElement(vnode.call())
 
   var node = document.createElement(vnode.tagName)
   var props = vnode.properties
@@ -106,13 +106,7 @@ function setAttribute(el, key, value) {
 }
 
 function handleThunk(a, b) {
-  return a && a.type == 'Thunk' ? unboxThunk(a, b) : a
-}
-
-function unboxThunk(thunk, previous) {
-  var node = thunk.vnode
-  if (node) return node
-  return thunk.vnode = thunk.render(previous)
+  return a && a.type == 'Thunk' ? a.call(b) : a
 }
 
 function remove(el) {
