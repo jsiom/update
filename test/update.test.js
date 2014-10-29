@@ -1,5 +1,5 @@
-var Node = require('../vnode')
-var Text = require('../vtext')
+var Node = require('create/node')
+var Text = require('create/text')
 var update = require('..')
 var createElement = update.createElement
 
@@ -21,7 +21,7 @@ describe('update', function(){
     var a = new Node('div')
     var b = new Node('div', {className:'selected'})
     var dom = update(a, b, createElement(a))
-    assert(dom.getAttribute('className') == 'selected')
+    assert(dom.className == 'selected')
   })
 
   it('removing basic properties', function(){
@@ -56,13 +56,13 @@ describe('update', function(){
     var a = new Node('div', {}, [new Node('a'), new Text('b')])
     var b = new Node('div', {}, [new Node('a', {className: 'test'})])
     var dom = update(a, b, createElement(a))
-    assert(dom.outerHTML == '<div><a classname="test"></a></div>')
+    assert(dom.outerHTML == '<div><a class="test"></a></div>')
   })
 
   it('adding and mutating children', function(){
     var a = new Node('div', {}, [new Node('a', {className: 'test'})])
     var b = new Node('div', {}, [new Node('a'), new Text('b')])
     var dom = update(a, b, createElement(a))
-    assert(dom.outerHTML == '<div><a></a>b</div>')
+    assert(dom.outerHTML == '<div><a class=""></a>b</div>')
   })
 })

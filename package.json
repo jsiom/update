@@ -6,6 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "assert": "jkroso/assert",
+    "create": "jsiom/create",
     "serve": "jkroso/serve",
     "hydro-html": "*",
     "hydro-bdd": "*",
