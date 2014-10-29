@@ -1,11 +1,11 @@
 
 # update
 
-  Bring the real DOM up to date with the virtual DOM
+  Bring the real DOM up to date with the virtual DOM. Most virtual DOM implementations will generate a diff between two virtual DOM nodes and then use that to update the real DOM. This implementation couples these two operations together for the sake of performance because I don't see myself taking advantage of reified diffs anytime soon.
 
 ## Installation
 
-With [packin](//github.com/jkroso/packin): `packin add jkroso/update`
+With [packin](//github.com/jkroso/packin): `packin add jsiom/update`
 
 then in your app:
 
@@ -20,8 +20,8 @@ var update = require('update')
 Update the `dom` according to the differences between virtual DOM nodes `from` and `to`
 
 ```js
-var Text = require('iom/text')
-var Node = require('iom/node')
+var Text = require('create/text')
+var Node = require('create/node')
 
 var from = new Node('div', {}, [new Node('a'), new Text('b')])
 var to = new Node('div', {}, [new Node('a', {className: 'test'})])
