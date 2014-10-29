@@ -98,8 +98,11 @@ function createElement(vnode) {
 function setAttribute(el, key, value) {
   if (key == 'style') {
     for (key in value) el.style[key] = value[key]
-  } else if (key == 'isfocused' && value) {
-    setTimeout(function(){ el.focus() })
+  } else if (key == 'isfocused') {
+    if (value) setTimeout(function(){ el.focus() })
+  } else if (key == 'value') {
+    // often value has already updated itself
+    if (el.value != value) el.value = value
   } else {
     el[key] = value
   }
