@@ -8,8 +8,8 @@
  */
 
 function update(a, b, dom) {
-  a = handleThunk(a)
   b = handleThunk(b, a)
+  a = handleThunk(a)
 
   if (a === b) return dom
   if (b == null) return remove(dom)
