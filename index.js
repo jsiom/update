@@ -72,7 +72,6 @@ function updateChildren(a, b, dom) {
 
 function createElement(vnode) {
   if (vnode.type == 'VirtualText') return document.createTextNode(vnode.text)
-  if (vnode.type == 'Widget') return vnode.init()
   if (vnode.type == 'Thunk') return createElement(vnode.call())
 
   var node = document.createElement(vnode.tagName)
