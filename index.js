@@ -89,8 +89,7 @@ function createElement(vnode) {
 }
 
 /**
- * Set an attribute on `el`. Since HTML doesn't specify an isfocused
- * attribute we fake it
+ * Set an attribute on `el`
  *
  * @param {Node} el
  * @param {String} key
@@ -101,12 +100,16 @@ function setAttribute(el, key, value) {
   if (key == 'style') {
     for (key in value) el.style[key] = value[key]
   } else if (key == 'isfocused') {
+    // Since HTML doesn't specify an isfocused attribute we fake it
     if (value) setTimeout(function(){ el.focus() })
   } else if (key == 'value') {
     // often value has already updated itself
     if (el.value != value) el.value = value
+  } else if (key == 'className') {
+    // Chrome doesn't handle setAttribute('className') well
+    el.className = value
   } else {
-    el[key] = value
+    el.setAttribute(key, value)
   }
 }
 
