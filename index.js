@@ -26,6 +26,8 @@ function update(a, b, dom) {
     if (a.text != b.text) dom.nodeValue = b.text
     return dom
   }
+
+  return dom
 }
 
 function updateProps(a, b, dom) {
@@ -71,6 +73,7 @@ function updateChildren(a, b, dom) {
  */
 
 function createElement(vnode) {
+  if (vnode instanceof Element) return vnode // already DOM
   if (vnode.type == 'VirtualText') return document.createTextNode(vnode.text)
   if (vnode.type == 'Thunk') return createElement(vnode.call())
 
