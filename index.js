@@ -77,7 +77,10 @@ function createElement(vnode) {
   if (vnode.type == 'VirtualText') return document.createTextNode(vnode.text)
   if (vnode.type == 'Thunk') return createElement(vnode.call())
 
-  var node = document.createElement(vnode.tagName)
+  var node = typeof createElement[vnode.tagName] == 'function'
+    ? createElement[vnode.tagName](vnode.tagName)
+    : document.createElement(vnode.tagName)
+
   var props = vnode.properties
   for (var key in props) setAttribute(node, key, props[key])
 
@@ -86,6 +89,35 @@ function createElement(vnode) {
   })
 
   return node
+}
+
+createElement.svg = function(){
+  var el = createSVG('svg')
+  el.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+  el.setAttribute('version', '1.1')
+  el.setAttribute('height', '100%')
+  el.setAttribute('width', '100%')
+  return el
+}
+
+createElement.path = function(){
+  var el = createSVG('path')
+  el.setAttribute('stroke', 'black')
+  el.setAttribute('fill', 'none')
+  return el
+}
+
+createElement.polyline =
+createElement.ellipse =
+createElement.polygon =
+createElement.circle =
+createElement.text =
+createElement.line =
+createElement.rect =
+createElement.g = createSVG
+
+function createSVG(tag) {
+  return document.createElementNS('http://www.w3.org/2000/svg', tag)
 }
 
 /**
