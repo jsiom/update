@@ -1,3 +1,5 @@
+var tmp = document.createElement('div')
+
 /**
  * Update the `dom` according to the differences between
  * virtual DOM nodes `a` and `b`
@@ -14,12 +16,18 @@ function update(a, b, dom) {
   if (a === b) return dom
   if (b == null) return remove(dom)
   if (a.type != b.type) {
-    return dom.parentElement.replaceChild(createElement(b), dom)
+    var parent = dom.parentElement
+    // incase the same literal DOM node is in both the
+    // old and new tree
+    parent.replaceChild(tmp, dom)
+    return parent.replaceChild(createElement(b), tmp)
   }
 
   if (a.type == 'VirtualNode') {
     if (a.tagName != b.tagName) {
-      return dom.parentElement.replaceChild(createElement(b), dom)
+      var parent = dom.parentElement
+      parent.replaceChild(tmp, dom)
+      return parent.replaceChild(createElement(b), tmp)
     }
     updateProps(a.properties, b.properties, dom)
     updateChildren(a, b, dom)
