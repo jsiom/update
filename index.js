@@ -13,10 +13,14 @@ function update(a, b, dom) {
 
   if (a === b) return dom
   if (b == null) return remove(dom)
-  if (a.type != b.type) return replace(dom, createElement(b))
+  if (a.type != b.type) {
+    return dom.parentElement.replaceChild(createElement(b), dom)
+  }
 
   if (a.type == 'VirtualNode') {
-    if (a.tagName != b.tagName) return replace(dom, createElement(b))
+    if (a.tagName != b.tagName) {
+      return dom.parentElement.replaceChild(createElement(b), dom)
+    }
     updateProps(a.properties, b.properties, dom)
     updateChildren(a, b, dom)
     return dom
@@ -151,11 +155,6 @@ function handleThunk(a, b) {
 
 function remove(el) {
   el.parentNode.removeChild(el)
-}
-
-function replace(old, NEW) {
-  old.parentNode.replaceChild(NEW, old)
-  return NEW
 }
 
 update.createElement = createElement
