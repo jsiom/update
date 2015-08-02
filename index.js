@@ -16,7 +16,7 @@ function update(a, b, dom) {
   if (a.type != b.type) return replace(dom, b)
 
   if (a.type == 'VirtualNode') {
-    if (a.tagName != b.tagName) replace(dom, b)
+    if (a.tagName != b.tagName) return replace(dom, b)
     updateProps(a.properties, b.properties, dom)
     updateChildren(a, b, dom)
     return dom
